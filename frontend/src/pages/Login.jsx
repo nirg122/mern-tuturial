@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { login, reset } from '../features/auth/authSlice';
 import Spinner from '../components/Spinner';
 
-const Login = () => {
+function Login() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -39,6 +39,7 @@ const Login = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -62,6 +63,7 @@ const Login = () => {
         </h1>
         <p>Login and start setting goals</p>
       </section>
+
       <section className="form">
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -82,10 +84,11 @@ const Login = () => {
               id="password"
               name="password"
               value={password}
-              placeholder="Enter your password"
+              placeholder="Enter password"
               onChange={onChange}
             />
           </div>
+
           <div className="form-group">
             <button type="submit" className="btn btn-block">
               Submit
@@ -95,6 +98,6 @@ const Login = () => {
       </section>
     </>
   );
-};
+}
 
 export default Login;

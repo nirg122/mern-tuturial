@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
-// @desc    Set new User
-// @route   POST /api/users/
+// @desc    Register new user
+// @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -14,9 +14,10 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Please add all fields');
   }
 
-  const userExist = await User.findOne({ email });
+  // Check if user exists
+  const userExists = await User.findOne({ email });
 
-  if (userExist) {
+  if (userExists) {
     res.status(400);
     throw new Error('User already exists');
   }
@@ -45,12 +46,13 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Authenticate a User
+// @desc    Authenticate a user
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Check for user email
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
@@ -71,9 +73,6 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
-  res.json({
-    message: 'User data display',
-  });
 });
 
 // Generate JWT
